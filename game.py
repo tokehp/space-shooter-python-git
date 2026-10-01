@@ -93,6 +93,9 @@ while running:
 
             elif event.key == pg.K_RIGHT:
                 right_pressed = False 
+
+            elif event.key == pg.K_SPACE:
+                projectile_fired = False
     
 
     ## Updating (movement, collisions, etc.) ##
@@ -146,7 +149,6 @@ while running:
         projectile = {'x': ship_x + ship_w/2 - projectile_w/2, 
                       'y': ship_y}
         projectiles.append(projectile)
-        projectile_fired = False
 
 
     ## Drawing ##
@@ -176,5 +178,5 @@ while running:
     pg.display.flip()
 
     # Limit/fix frame rate (fps)
-    clock.tick(50)
+    clock.tick(400)
     tick += 1
