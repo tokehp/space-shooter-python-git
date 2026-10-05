@@ -2,13 +2,14 @@
 # Made for the purpose of teaching git version control to beginners.
 
 import pygame as pg
+import random as r
 
 
 ### Setup ###
 pg.init()
 clock = pg.time.Clock()
 
-screen = pg.display.set_mode((400,600))
+screen = pg.display.set_mode((2000,1000))
 pg.display.set_caption("Space Shooter")
 
 # Spaceship character
@@ -16,8 +17,8 @@ ship_images = []
 for i in range(3):
     img = pg.image.load(f"images/ship_{i}.png")
     ship_images.append(img)
-ship_x = 200 
-ship_y = 500
+ship_x = 1000 
+ship_y = 900
 ship_w = ship_images[0].get_rect().size[0]
 ship_h = ship_images[0].get_rect().size[1]
 
@@ -28,11 +29,11 @@ for i in range(2):
     alien_images.append(img)
 
 aliens = []
-for i in range(5):
-    alien1 = {'x': 50*i + 50 , 'y': 0}
-    alien2 = {'x': 50*i + 50, 'y': 50}
-    aliens.append(alien1)
-    aliens.append(alien2)
+for i in range(20):
+        for _ in range(20):
+            n = r.randint(0,40)
+            alien1 = {'x': n*50 , 'y': i*-20}
+            aliens.append(alien1)
 
 alien_w = alien_images[0].get_rect().size[0]
 alien_h = alien_images[0].get_rect().size[1]
@@ -136,7 +137,8 @@ while running:
 
                     # Alien is hit
                     projectiles.remove(projectile)
-                    aliens.remove(alien)
+                    alien["y"] -= 400
+                    score += 1
 
                     # No further aliens can be hit by this projectile 
                     # so skip to the next projectile 
@@ -178,5 +180,5 @@ while running:
     pg.display.flip()
 
     # Limit/fix frame rate (fps)
-    clock.tick(400)
+    clock.tick(165)
     tick += 1
