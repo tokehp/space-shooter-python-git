@@ -30,7 +30,7 @@ for i in range(2):
 
 aliens = []
 for i in range(20):
-        for _ in range(3):
+        for _ in range(6):
             n = r.randint(0,40)
             alien1 = {'x': n*50 , 'y': i*-20}
             aliens.append(alien1)
@@ -137,12 +137,12 @@ while running:
                     alien['y'] < projectile['y'] + projectile_h):
                     
                     # Alien is hit
-                    if projectile_count >= 3:
+                    if projectile_count >= 2:
                         projectiles.remove(projectile)
                     else:
                         projectile_count += 1
-                    alien["y"] -= 400
-                    score += 1
+                        alien["y"] -= 400
+                        score += 1
 
                     # No further aliens can be hit by this projectile 
                     # so skip to the next projectile 
@@ -184,5 +184,5 @@ while running:
     pg.display.flip()
 
     # Limit/fix frame rate (fps)
-    clock.tick(365)
+    clock.tick(300)
     tick += 1
