@@ -30,7 +30,7 @@ for i in range(2):
 
 aliens = []
 for i in range(20):
-        for _ in range(20):
+        for _ in range(3):
             n = r.randint(0,40)
             alien1 = {'x': n*50 , 'y': i*-20}
             aliens.append(alien1)
@@ -41,8 +41,8 @@ alien_h = alien_images[0].get_rect().size[1]
 # Projectiles 
 projectile_fired = False
 projectiles = []
-projectile_w = 4 
-projectile_h = 8
+projectile_w = 12
+projectile_h = 16
 
 # Keypress status
 left_pressed = False
@@ -107,16 +107,16 @@ while running:
 
     # Spaceship
     if left_pressed:
-        ship_x -= 8
+        ship_x -= 16
 
     if right_pressed:
-        ship_x += 8
+        ship_x += 16
 
     # Projectile movement
     # Reverse iteration needed to handle each projectile correctly
     # in cases where a projectile is removed.
     for projectile in reversed(projectiles):
-        projectile['y'] -= 8 
+        projectile['y'] -= 16 
 
         # Remove projectiles leavning the top of the screen
         if projectile['y'] < 0:
@@ -125,6 +125,7 @@ while running:
     # Alien / projectile collision 
     # Test each projectile against each alien
     for projectile in reversed(projectiles):
+        projectile_count = 0
         for alien in aliens:
 
             # Horizontal (x) overlap
@@ -134,15 +135,18 @@ while running:
                 # Vertical (y) overlap 
                 if (projectile['y'] < alien['y'] + alien_h and 
                     alien['y'] < projectile['y'] + projectile_h):
-
+                    
                     # Alien is hit
-                    projectiles.remove(projectile)
+                    if projectile_count >= 3:
+                        projectiles.remove(projectile)
+                    else:
+                        projectile_count += 1
                     alien["y"] -= 400
                     score += 1
 
                     # No further aliens can be hit by this projectile 
                     # so skip to the next projectile 
-                    break
+                    
 
     # Firing (spawning new projectiles)
     if projectile_fired:
@@ -180,5 +184,5 @@ while running:
     pg.display.flip()
 
     # Limit/fix frame rate (fps)
-    clock.tick(165)
+    clock.tick(365)
     tick += 1
