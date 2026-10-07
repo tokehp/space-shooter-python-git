@@ -39,10 +39,11 @@ alien_w = alien_images[0].get_rect().size[0]
 alien_h = alien_images[0].get_rect().size[1]
 
 # Projectiles 
-projectile_fired = False
+space_pressed = False
 projectiles = []
 projectile_w = 12
 projectile_h = 16
+bullets = 0
 
 # Keypress status
 left_pressed = False
@@ -84,7 +85,7 @@ while running:
                 right_pressed = True
 
             elif event.key == pg.K_SPACE:
-                projectile_fired = True
+                space_pressed = True
 
         # Keyreleases
         elif event.type == pg.KEYUP:
@@ -96,7 +97,7 @@ while running:
                 right_pressed = False 
 
             elif event.key == pg.K_SPACE:
-                projectile_fired = False
+                space_pressed = False
     
 
     ## Updating (movement, collisions, etc.) ##
@@ -120,6 +121,7 @@ while running:
 
         # Remove projectiles leavning the top of the screen
         if projectile['y'] < 0:
+            bullets -= 1
             projectiles.remove(projectile)
 
     # Alien / projectile collision 
@@ -137,19 +139,17 @@ while running:
                     alien['y'] < projectile['y'] + projectile_h):
                     
                     # Alien is hit
-                    if projectile_count >= 3:
-                        projectiles.remove(projectile)
-                    else:
-                        projectile_count += 1
+                    projectiles.remove(projectile)
                     alien["y"] -= 400
                     score += 1
-
+                    break
                     # No further aliens can be hit by this projectile 
                     # so skip to the next projectile 
                     
 
     # Firing (spawning new projectiles)
-    if projectile_fired:
+    if space_pressed and bullets <= 2:
+        bullets += 2
         sound_laser.play()
 
         projectile = {'x': ship_x + ship_w/2 - projectile_w/2, 
@@ -184,5 +184,5 @@ while running:
     pg.display.flip()
 
     # Limit/fix frame rate (fps)
-    clock.tick(365)
+    clock.tick(60)
     tick += 1
